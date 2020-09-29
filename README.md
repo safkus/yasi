@@ -1,2 +1,2 @@
-# yasi
-Yet another space invader
+# YASI
+Yet Another Space Invader
