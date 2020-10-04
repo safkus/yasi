@@ -9,12 +9,12 @@ HEIGHT = 750
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Yet Another Space Invaders")
 
-# Load enemy ship image assets
+# Load enemy player image assets
 RED_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.png"))
 GREEN_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_green_small.png"))
 BLUE_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_blue_small.png"))
 
-# Load main ship image
+# Load main player image
 YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_yellow.png"))
 
 # Lasers
@@ -32,13 +32,21 @@ class Ship:
 		self.x = x
 		self.y = y
 		self.health = health
-		self.ship_img = None
+		self.player_img = None
 		self.laser_img = None
 		self.lasers = []
 		self.cool_down_counter = 0
 
 	def draw(self, window):
-		pygame.draw.rect(window, (255,0,0), (self.x, self.y, 50, 50))
+		window.blit(self.player_img, (self.x, self.y))
+
+class Player(Ship):
+	def __init__(self, x, y, health=100):
+		super().__init__(x, y, health)
+		self.player_img = YELLOW_SPACE_SHIP
+		self.laser_img = YELLOW_LASER
+		self.mask = pygame.mask.from_surface(self.player_img)
+		self.max_health = health
 
 def main():
 	run = True
@@ -49,7 +57,7 @@ def main():
 
 	player_vel = 5
 
-	ship = Ship(300,650)
+	player = Player(300,650)
 
 	clock = pygame.time.Clock()
 
@@ -63,7 +71,7 @@ def main():
 		WIN.blit(lives_label, (10, 10))
 		WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
 
-		ship.draw(WIN)
+		player.draw(WIN)
 
 		pygame.display.update()
 
@@ -77,12 +85,12 @@ def main():
 
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_a]: # left
-			ship.x -= player_vel
+			player.x -= player_vel
 		if keys[pygame.K_d]: # right
-			ship.x += player_vel
+			player.x += player_vel
 		if keys[pygame.K_w]: # up
-			ship.y -= player_vel
+			player.y -= player_vel
 		if keys[pygame.K_s]: # down
-			ship.y += player_vel
+			player.y += player_vel
 
 main()
