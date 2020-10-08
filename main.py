@@ -69,6 +69,14 @@ class Ship:
 		elif self.cool_down_counter > 0:
 			self.cool_down_counter += 1
 
+	def move_lasers(self, vel, obj):
+		self.cooldown()
+		for laser in self.lasers:
+			laser.move(vel)
+			if laser.off_screen(HEIGHT):
+				self.lasers.remove(laser)
+			elif laser.collision()
+
 	def shoot(self):
 		if self.cool_down_counter == 0:
 			laser = Laser(x,y, self.laser_img)
